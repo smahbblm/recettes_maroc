@@ -16,4 +16,11 @@ si en veut savoir quels sont les packages et les librairie  qu'ils sont installe
 c'estune liste  de  librairie qui vont affiché   mais  lorsque je travaill avec  l'environnent actuel j'aurai pas cette  liste 
 pip c'est le gestionnaire de  package  (librairie)  dans python .
 
-python manage.py runserver : afficher la racine 
+python manage.py runserver : afficher la racine et  c'est exactement  la commande qui  permet de lancer  le serveur de  l'application Django . 
+
+===============commands de base : ===============================================================
+le fichier manage.py  c'est  exactement le point  d'entrée à l'application Django ,  il contient de scripte CLI  qui  permet  d'exécuetr toute commande cli  
+python manage.py makemigrations
+python manage.py migrate
+python manage.py runserver
+python manage.py createsuperuser
