@@ -1,11 +1,8 @@
+# la définition de la classe Ingriends :
+
 from django.db import models
+class Produits(models.Model):
 
-# Create your models here.
-""" 
-c'est  la  classe Prduit 
-class Produit(models.Model):
-    nom          =
-    description  =
-    prix         =
-
-"""
+    nom                        = models.TextField()
+    Categorie                  = models.TextField()
+    Disponibitile_saisonnière  = models.TextField()
