@@ -76,16 +76,25 @@ WSGI_APPLICATION = 'config_recettes.wsgi.application'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
 #  c'est  là  on fait la configuration  de base de donnée.
+# settings.py
+
+# settings.py
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql', #  ici on dit à django d'utilisé le pilote oficiel de postgressql. 
-        'NAME': 'recettes_maroc_db',  # Ex: 'recettes_maroc_db'
-        'USER': 'votre_utilisateur_postgres', # Ex: 'django_user'
-        'PASSWORD': 'votre_mot_de_passe',     # Ex: 'secret_password'
-        'HOST': 'localhost',      # Ou l'IP du serveur PostgreSQL (si externe)
-        'PORT': '5432',           # Port par défaut de PostgreSQL
+        'ENGINE': 'django.db.backends.mysql', 
+        'NAME': 'recettes_maroc_mysql_db', 
+        'USER': 'votre_utilisateur_mysql', 
+        'PASSWORD': 'votre_mot_de_passe_mysql',
+        
+        # Hôte : localhost car Docker est sur votre machine
+        'HOST': '127.0.0.1', 
+        
+        # 🟢 Port : Le port HÔTE du conteneur Docker
+        'PORT': '3308', 
     }
 }
+
 
 
 # Password validation

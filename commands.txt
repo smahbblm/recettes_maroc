@@ -30,3 +30,5 @@ python manage.py makemigrations
 python manage.py migrate
 =======================================================
 l'installation de pilote Django : pip install psycopg2-binary
+===============Pour que django manipule la colonne des images dans la table recettes il faut insttaler la bibliothèque: pillow==================
+(venv) PS D:\recettes_maroc> python -m pip install Pillow

@@ -1,29 +1,38 @@
 version: '3.8'
 
 services:
-  db:
-   
-    image: postgres:16-alpine 
-    
-
-    container_name: postgres_recettes
-    
-  
+  # 1. Conteneur MySQL (moderne et compatible)
+  mysql_recettes:
+    image: mysql:8.0
+    container_name: mysql_recettes
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
     environment:
-      
-      POSTGRES_DB: recettes_maroc_db    
-      
-      POSTGRES_USER: votre_utilisateur_postgres 
-      
-      POSTGRES_PASSWORD: votre_mot_de_passe      
-    
-   
+      MYSQL_DATABASE: 'recettes_maroc_mysql_db' 
+      MYSQL_USER: 'votre_utilisateur_mysql' 
+      MYSQL_PASSWORD: 'votre_mot_de_passe_mysql'
+      MYSQL_ROOT_PASSWORD: 'mot_de_passe_root_securise'
     ports:
-      - "5432:5432" # le conetenur de posgressql est accessible via le port 
-    
-   
+      # Hôte 3308 -> Conteneur 3306 (évite XAMPP 3307)
+      - "3308:3306"
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - db_data_mysql:/var/lib/mysql
+
+  # 2. Conteneur phpMyAdmin
+  phpmyadmin_recettes:
+    image: phpmyadmin/phpmyadmin
+    container_name: phpmyadmin_recettes
+    restart: always
+    depends_on:
+      - mysql_recettes
+    ports:
+      - 8081:80 # Accès à http://localhost:8081
+    environment:
+      PMA_HOST: mysql_recettes 
+      # CORRECTION : Le port interne du conteneur MySQL est TOUJOURS 3306
+      PMA_PORT: 3306 
+      PMA_USER: root
+      PMA_PASSWORD: mot_de_passe_root_securise
 
 volumes:
-  postgres_data:
+  db_data_mysql:
