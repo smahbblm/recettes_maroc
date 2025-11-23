@@ -1,0 +1,37 @@
+=============pour l'application interactions=======================================================
+notre  application est basé sur  l'algorithme de contenu . 
+L'application interactions est la couche de données dédiée à l'acquisition du comportement utilisateur, servant de base au moteur de recommandation basé sur le contenu.
+
+Elle stocke les actions positives de l'utilisateur sur les recettes (Recette) pour déterminer son profil d'intérêt (quels ingrédients, quelles régions, ou quelles difficultés il préfère), sans lesquelles aucune recommandation personnalisée n'est possible.
+
+les modèles de cette applications :
+Favori.py : utilisateur (type: ForeignKey vers settings.AUTH_USER_MODEL  et role : pour dire qu'est consulter ?) , recette (type: ForeignKey vers Recette  de l'application recette role: Quelle recette a été consultée ?), date_ajout( type: DateTimeField  role :Quand l'action a-t-elle eu lieu ? )
+HistoriqueConsultation.py: 
+les champs:
+utilisateur : type = ForeignKey vers settings.AUTH_USER_MODEL role =Qui a consulté ? 
+
+recette : type : ForeignKey vers Recette role : Quelle recette a été consultée ?
+
+date_consultation: type : DateTimeField  role: Quand la consultation a-t-elle eu lieu ?
+
+pour ajouter des notations (étoiles )  nous aurons besoin de cette modèle: Evaluation.py
+
+utilisateur type: ForeignKey  role: Qui a noté ?  
+recette : type ForeignKey role : Quelle recette a été notée ? 
+note : type  IntegerFieldLa  role :note donnée (ex: de 1 à 5).
+date_evaluation   : type   DateTimeField   role :Quand l'évaluation a-t-elle été donnée ?
+====================pour l'application account==users== profiles==================================
+modèle : UserProfile  c'est  ici qu'on doit faire l'app
+
+on a un problème : Django fournit un modèle User par défaut, mais ce modèle ne contient que les informations de base (nom d'utilisateur, mot de passe, email)
+
+L'application account est dédiée à l'extension du modèle utilisateur par défaut de Django pour capturer les données de profil spécifiques nécessaires au fonctionnement du moteur de recommandation.
+les champs : 
+modèle ALLergence :  Le rôle du dictionnaire Allergene est de fournir un ensemble d'identifiants uniques pour qu'on puisse les associer à n'importe quel nombre d'utilisateurs.
+******Dictionnaire de référence. Elle stocke la liste exhaustive de tous les allergènes que l'application reconnaît.
+*****En conclusion : La sensibilité est définie dans UserProfile, mais elle utilise le dictionnaire Allergene pour garantir que les données sont standardisées et faciles à filtrer.
+**** La phrase que vous avez citée est le but ultime de cette structure de données : permettre au moteur de recommandation de filtrer les recettes en se basant sur les allergies définies par l'utilisateur.
+===================la logique de systeme de recommandation=======================================================
+
+pour se faire on a besoin d'une couche de service (Service Layer):
+***c'est à  dire le moteur de recommandation basé  sur le contenu  doit etre mettre dans le backend
