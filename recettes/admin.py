@@ -1,6 +1,7 @@
 from django.contrib import admin
 from django.apps import apps
 
+
 # Dynamically register all models in the 'recettes' app so they appear in
 # the Django admin even when models are split across multiple files.
 try:

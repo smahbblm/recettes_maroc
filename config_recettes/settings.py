@@ -78,8 +78,12 @@ WSGI_APPLICATION = 'config_recettes.wsgi.application'
 #  c'est  là  on fait la configuration  de base de donnée.
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql', #  ici on dit à django d'utilisé le pilote oficiel de postgressql. 
+        'NAME': 'recettes_maroc_db',  # Ex: 'recettes_maroc_db'
+        'USER': 'votre_utilisateur_postgres', # Ex: 'django_user'
+        'PASSWORD': 'votre_mot_de_passe',     # Ex: 'secret_password'
+        'HOST': 'localhost',      # Ou l'IP du serveur PostgreSQL (si externe)
+        'PORT': '5432',           # Port par défaut de PostgreSQL
     }
 }
 
@@ -141,5 +145,5 @@ INSTALLED_APPS = [
     'recettes',  # <-- L'application que vous avez créée
     'preferences',
     'account',
-    'produits',
+    
 ]
