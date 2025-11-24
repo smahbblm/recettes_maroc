@@ -1,7 +1,8 @@
 # interactions/models.py
 
-from django.db import models
-from django.conf import settings # Important pour la liaison au modèle User
+#cette ligne c'est pour dire 
+from django.db import models 
+from django.conf import settings 
 from recettes.models import Recette # Liaison au catalogue de recettes
 
 # --- 1. Favori ---
