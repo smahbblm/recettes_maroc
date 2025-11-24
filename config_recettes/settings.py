@@ -154,5 +154,6 @@ INSTALLED_APPS = [
     'recettes',  # <-- L'application que vous avez créée
     'preferences',
     'account',
+    'interactions',
     
 ]
