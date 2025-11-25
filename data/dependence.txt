@@ -1,0 +1,2 @@
+//pour suupprimer les ponctuation on a besoin  de unidecode
+pip install unidecode
