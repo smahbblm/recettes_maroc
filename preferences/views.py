@@ -1,18 +1,14 @@
-from rest_framework import generics
-from .models import Categorie, Region, Ingredient, PreferenceUtilisateur
-from .serializers import CategorieSerializer, RegionSerializer, IngredientSerializer, PreferenceSerializer
+from django.http import JsonResponse
+from recettes.models import Categorie, Region, Ingredient
 
-class CategorieListView(generics.ListAPIView):
-    queryset = Categorie.objects.all()
-    serializer_class = CategorieSerializer
+def categorie_list(request):
+    categories = list(Categorie.objects.values('id', 'nom'))
+    return JsonResponse({'categories': categories})
 
-class RegionListView(generics.ListAPIView):
-    queryset = Region.objects.all()
-    serializer_class = RegionSerializer
+def region_list(request):
+    regions = list(Region.objects.values('id', 'nom'))
+    return JsonResponse({'regions': regions})
 
-class IngredientListView(generics.ListAPIView):
-    queryset = Ingredient.objects.all()
-    serializer_class = IngredientSerializer
-
-class PreferenceView(generics.CreateAPIView):
-    serializer_class = PreferenceSerializer
+def ingredient_list(request):
+    ingredients = list(Ingredient.objects.values('id', 'nom'))
+    return JsonResponse({'ingredients': ingredients})

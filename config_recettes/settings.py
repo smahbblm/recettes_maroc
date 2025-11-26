@@ -30,15 +30,7 @@ ALLOWED_HOSTS = []
 
 # Application definition
 
-INSTALLED_APPS = [
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-     #application == composntes
-]
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -160,6 +152,7 @@ INSTALLED_APPS = [
     'account',
     'interactions',
 ]
+
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
 ]

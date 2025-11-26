@@ -1,8 +1,12 @@
+# config_recettes/urls.py
 from django.contrib import admin
 from django.urls import path, include
 
+from recettes.views import CategorieListView, RegionListView, IngredientListView
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('', include('preferences.urls')),  # ← Ajouter cette ligne
+    # vos URLs existantes
+    path('api/categories/', CategorieListView.as_view()),
+    path('api/regions/', RegionListView.as_view()),
+    path('api/ingredients/', IngredientListView.as_view()),
 ]
