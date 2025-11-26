@@ -1,3 +1,5 @@
+Pour activer l'espace  de travail de  mon projet je  dois  faire comme ça :   .\venv\Scripts\activate
+
 N.b: Pour lancer le serveur de Django je dois obligatoirement faire : python manager.py runserver
 pour crée une application  propre on fait  cette commande : python manage.py startapp nom_application
 N.B: chaque projet  Django  à un  clé  secrette 
@@ -10,7 +12,7 @@ c'est le domaine  de l'application : ALLOWED_HOSTS = []
 je dois  obligatoirement crée un super administrateur car il a tous les permissions sur l'Application  en utilisant la commande: python manage.py createsuperuser 
 pour  intaller Django on fait :   pip install Django==version 
 si on a  plusieur version  de python on doit  fair   crée l'environnement actuele avec  cette commande pour  notre  projet :python(version) -m venv venv   
-Pour activer l'espace  de travail de  mon projet je  dois  faire comme ça :   .\venv\Scripts\activate
+
 Pour  désactiver on fait : desactivate 
 si en veut savoir quels sont les packages et les librairie  qu'ils sont installer sur mon machine  je tape cete  commande : pip freeze  
 c'estune liste  de  librairie qui vont affiché   mais  lorsque je travaill avec  l'environnent actuel j'aurai pas cette  liste 
@@ -32,3 +34,5 @@ python manage.py migrate
 l'installation de pilote Django : pip install psycopg2-binary
 ===============Pour que django manipule la colonne des images dans la table recettes il faut insttaler la bibliothèque: pillow==================
 (venv) PS D:\recettes_maroc> python -m pip install Pillow
+===============================================================
+ORM : L'ORM est un traducteur automatique entre votre code Python et la base de données SQL.
