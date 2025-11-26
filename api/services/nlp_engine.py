@@ -1,28 +1,47 @@
-# Imports nécessaires :
-# from sklearn.feature_extraction.text import TfidfVectorizer
-# from sklearn.metrics.pairwise import cosine_similarity
-# import pandas as pd
-# from recettes.models import Recette
+from sentence_transformers import SentenceTransformer
+import pandas as pd 
+import faiss
+import numpy as np
+from numpy.linalg import norm
+class Nlp:
+    def __init__(self,csv_path="./datafr_cleaned.csv"):
+        
+        self.df=pd.read_csv(csv_path)
+        self.df["full_text"]=(
+        self.df["name"].fillna("")+" ."+
+        self.df["ingredients"].fillna("")+" . "+
+        self.df["instructions"].fillna(""))
+        texts=self.df["full_text"].tolist()
+        self.model=SentenceTransformer('all-MiniLM-L6-v2')
+        self.embeddings=self.model.encode(texts,batch_size=64,show_progress_bar=True,convert_to_numpy=True)
+        d=self.embeddings.shape[1]
+        self.index=faiss.IndexFlatL2(d)
+        self.index.add(self.embeddings)
+    
+    def Search_query(self,query,top_k=10):
+        resultats=[]
+        vector_query = self.model.encode([query], convert_to_numpy=True)[0]
+        D,I=self.index.search(np.array([vector_query],dtype='float32'),top_k)
+        for idx in I[0]:
+            row=self.df.iloc[idx]
+            resultats.append({
+                 "name": row["name"],
+                "ingredients": row["ingredients"],
+                "instructions": row["instructions"],
+                "preparation_time": row.get("preparation_time", None),
+                "cooking_time": row.get("cooking_time", None),
+                "total_time": row.get("total_time", None),
+                "image_url": row.get("image_url", None),
+                "source": row.get("source", None)
 
-# Attributs de classe :
-# - vectorizer : TfidfVectorizer pour transformer texte en vecteurs
-# - recipe_vectors : Vecteurs TF-IDF de toutes les recettes
-# - recipes_df : DataFrame avec toutes les recettes
 
-# Méthode __init__() :
-# - Charger toutes les recettes depuis Django
-# - Créer corpus de texte (nom + description + ingrédients)
-# - Entraîner TfidfVectorizer sur le corpus
-# - Stocker les vecteurs des recettes
+            })
+        return resultats
+       
 
-# Méthode find_similar_recipes(query, top_k=20) :
-# - Transformer la requête utilisateur en vecteur TF-IDF
-# - Calculer similarité cosinus avec tous les vecteurs recettes
-# - Trier par score de similarité (descendant)
-# - Retourner top_k recettes avec leurs scores
-# - Format retour : [(recette_id, score), ...]
 
-# Méthode _preprocess_text(text) :
-# - Nettoyer le texte (minuscules, suppression accents)
-# - Tokenisation basique
-# - Retourner texte nettoyé
+   
+
+
+
+
