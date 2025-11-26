@@ -1,4 +1,5 @@
-import pandas as pd
+
+"""
 from unidecode import unidecode
 import re
 df=pd.read_csv("./datafr.csv")
@@ -25,3 +26,16 @@ df_clean['instructions'] = df_clean['instructions'].apply(clean_Text)
 
 
 df_clean.to_csv("./datafr_cleaned.csv", index=False)
+
+df[df["image_url"].isna()]
+"""
+import pandas as pd
+df=pd.read_csv("./datafr_cleaned.csv")
+default_imageurl="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRGaf_p8WUMQu664cib9kpdFSmHiOlIfltjLozlKoyUYM1DUS9QNrXRdIS9qL2nElCoEeg&usqp=CAU"
+df["image_url"]=df["image_url"].fillna(default_imageurl)
+
+print("nbr",df[df["image_url"].isna()].shape[0])
+
+
+print(df.dtypes)
+
