@@ -71,17 +71,17 @@ WSGI_APPLICATION = 'config_recettes.wsgi.application'
 # settings.py
 
 # settings.py
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql', 
         'NAME': 'recettes_maroc_mysql_db', 
         'USER': 'root', 
-        'PASSWORD': 'mot_de_passe_root_securise',
+        'PASSWORD': '12345',
         'HOST': '127.0.0.1', 
         'PORT': '3308', 
     }
 }
+
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators

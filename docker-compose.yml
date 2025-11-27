@@ -1,20 +1,19 @@
 version: '3.8'
-
 services:
-  # 1. Conteneur MySQL (moderne et compatible)
+
+  # 1. Conteneur MySQL
   mysql_recettes:
     image: mysql:8.0
     container_name: mysql_recettes
     command: --default-authentication-plugin=mysql_native_password
     restart: always
     environment:
-      MYSQL_DATABASE: 'recettes_maroc_mysql_db' 
-      MYSQL_USER: 'votre_utilisateur_mysql' 
-      MYSQL_PASSWORD: 'votre_mot_de_passe_mysql'
-      MYSQL_ROOT_PASSWORD: 'mot_de_passe_root_securise'
+      MYSQL_DATABASE: recettes_maroc_mysql_db
+      MYSQL_USER: django_user        # Utilisateur pour Django
+      MYSQL_PASSWORD: django_pass    # Mot de passe pour Django
+      MYSQL_ROOT_PASSWORD: mot_de_passe_root_securise
     ports:
-      # Hôte 3308 -> Conteneur 3306 (évite XAMPP 3307)
-      - "3308:3306"
+      - "3308:3306"  # Hôte 3308 -> Conteneur 3306
     volumes:
       - db_data_mysql:/var/lib/mysql
 
@@ -26,12 +25,11 @@ services:
     depends_on:
       - mysql_recettes
     ports:
-      - 8081:80 # Accès à http://localhost:8081
+      - "8081:80"  # Accès via http://localhost:8081
     environment:
-      PMA_HOST: mysql_recettes 
-      # CORRECTION : Le port interne du conteneur MySQL est TOUJOURS 3306
-      PMA_PORT: 3306 
-      PMA_USER: root
+      PMA_HOST: mysql_recettes
+      PMA_PORT: 3306
+      PMA_USER: root                   # Utilisateur root pour phpMyAdmin
       PMA_PASSWORD: mot_de_passe_root_securise
 
 volumes:

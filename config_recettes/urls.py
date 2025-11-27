@@ -16,3 +16,4 @@ urlpatterns = [
     # Référencez la fonction get_csrf qui est déjà décorée
     path('api/csrf_token/', get_csrf, name='csrf_token'), 
 ]
+

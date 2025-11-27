@@ -1,8 +1,14 @@
 import os
-import django
+import sys
 
-# Initialise Django correctement
+# Ajouter la racine du projet (recettes_maroc) au PYTHONPATH
+PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sys.path.append(PROJECT_ROOT)
+
+# Définir le settings module
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config_recettes.settings')
+
+import django
 django.setup()
 
 from django.contrib.auth import get_user_model
