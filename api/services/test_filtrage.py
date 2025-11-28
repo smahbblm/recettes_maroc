@@ -15,6 +15,7 @@ from django.contrib.auth import get_user_model
 from api.services.recommender_engine import filter_by_content
 from api.services.nlp_engine import Nlp
 
+
 def test_filtrage(user_id, query):
     User = get_user_model()
     user = User.objects.get(id=user_id)
@@ -24,10 +25,20 @@ def test_filtrage(user_id, query):
     resultats = filter_by_content(user, nlp_results)
 
     print(f"Résultats personnalisés pour '{query}' et user {user_id}:")
-    for r in resultats:
-        print(f"Nom: {r['name']} | Score: {r['score_content']}")
-        print(f"Ingrédients: {r['ingredients']}")
-        print("-" * 40)
+
+    for recette in resultats:
+
+      print("Nom:", recette.get("nom"))
+      print("Score:", recette.get("score_content"))
+      print("Ingrédients:", recette.get("ingredients"))
+      print("Instructions:", recette.get("instructions"))
+      print("Image:", recette.get("image_url"))
+      print("Préparation:", recette.get("preparation_time"))
+      print("Cuisson time:", recette.get("cooking_time"))
+      print("Total time:", recette.get("total_time"))
+      print("Source:", recette.get("source"))
+      print("---------------------------------------")
+
 
 if __name__ == "__main__":
     test_filtrage(user_id=1, query="couscous au poulet")

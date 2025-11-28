@@ -18,9 +18,9 @@ def get_user_preferences(user):
         }
 
 def get_user_interactions(user):
-    favoris = set(Favori.objects.filter(utilisateur=user).values_list('recette__name', flat=True))
-    notes_positives = set(Evaluation.objects.filter(utilisateur=user, note__gte=4).values_list('recette__name', flat=True))
-    consultations = set(HistoriqueConsultation.objects.filter(utilisateur=user).values_list('recette__name', flat=True))
+    favoris = set(Favori.objects.filter(utilisateur=user).values_list('recette__nom', flat=True))
+    notes_positives = set(Evaluation.objects.filter(utilisateur=user, note__gte=4).values_list('recette__nom', flat=True))
+    consultations = set(HistoriqueConsultation.objects.filter(utilisateur=user).values_list('recette__nom', flat=True))
 
     return {
         'favoris': favoris,
@@ -35,7 +35,7 @@ def filter_by_content(user, nlp_results):
     filtered = []
 
     for recette in nlp_results:
-        name = recette.get("name", "")
+        nom = recette.get("nom", "") or recette.get("name", "")
 
         recette_ingredients = [i.strip().lower() for i in recette.get("ingredients", "").split("-")]
 
@@ -46,11 +46,11 @@ def filter_by_content(user, nlp_results):
             score += 0.5
         if recette.get("region") in prefs['regions_preferees']:
             score += 0.5
-        if name in interactions['favoris']:
+        if nom in interactions['favoris']:
             score += 0.3
-        if name in interactions['notes_positives']:
+        if nom  in interactions['notes_positives']:
             score += 0.2
-        if name in interactions['consultations']:
+        if nom in interactions['consultations']:
             score += 0.1
         recette['score_content'] = score
         filtered.append(recette)
