@@ -28,31 +28,12 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 
-# Application definition
-
-INSTALLED_APPS = [
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-    'rest_framework',
-    'corsheaders',
-    'recettes',
-    'preferences',
-    'account',
-    'interactions',
-]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    
-    # 1. 🔑 Doit venir avant CorsMiddleware pour la validation. C'est CORRECT.
-    'django.middleware.csrf.CsrfViewMiddleware', 
-    
-    # 2. CorsMiddleware doit venir APRÈS CsrfViewMiddleware pour ne pas bloquer les cookies.
+
+    # IMPORTANT : CORS AVANT CommonMiddleware
     'corsheaders.middleware.CorsMiddleware',
 
     'django.middleware.common.CommonMiddleware',
@@ -60,6 +41,8 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+
 
 ROOT_URLCONF = 'config_recettes.urls'
 
@@ -95,18 +78,12 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql', 
         'NAME': 'recettes_maroc_mysql_db', 
-        'USER': 'votre_utilisateur_mysql', 
-        'PASSWORD': 'votre_mot_de_passe_mysql',
-        
-        # Hôte : localhost car Docker est sur votre machine
+        'USER': 'root', 
+        'PASSWORD': '12345',
         'HOST': '127.0.0.1', 
-        
-        # 🟢 Port : Le port HÔTE du conteneur Docker
         'PORT': '3308', 
     }
 }
-
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
@@ -149,8 +126,35 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# Paramètres d'autorisation CORS (pour les requêtes)
-CORS_ALLOW_ALL_ORIGINS = False 
+
+# config_recettes/settings.py
+
+# Application definition
+
+INSTALLED_APPS = [
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'rest_framework',        # ← NOUVEAU
+    'corsheaders',          # ← NOUVEAU
+    'recettes',
+    'preferences',
+    'account',
+    'interactions',
+]
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ]
+}
+
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
     "http://127.0.0.1:5173",

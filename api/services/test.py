@@ -6,7 +6,7 @@ nlp = Nlp(csv_path="../../data/datafr_cleaned.csv")
 
 
 # Poser une question
-query = "tajine au poulet"
+query = "couscous au poulet"
 resultats = nlp.Search_query(query, top_k=5)
 
 # Afficher les résultatscd

@@ -15,6 +15,7 @@ class ProfilUtilisateur(models.Model):
         ('EXPERT', 'Expert'),
     ]
     
+    
     # Liaison obligatoire avec l'utilisateur Django
     user = models.OneToOneField(
         settings.AUTH_USER_MODEL,

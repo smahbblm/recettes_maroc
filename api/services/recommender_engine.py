@@ -1,26 +1,59 @@
-# Imports nécessaires :
-# from .nlp_engine import NLPSearchEngine
-# from .ml_engine import MLRecommendationEngine
+from .nlp_engine import Nlp
+from preferences.models import PreferenceUtilisateur
+from interactions.models import Favori, Evaluation, HistoriqueConsultation
 
-# Attributs de classe :
-# - nlp_engine : Instance NLPSearchEngine
-# - ml_engine : Instance MLRecommendationEngine
+def get_user_preferences(user):
+    try:
+        prefs = user.preferences
+        return {
+            'categories_preferees': set(prefs.categories_preferees.values_list('nom', flat=True)),
+            'regions_preferees': set(prefs.regions_preferees.values_list('nom', flat=True)),
+            'ingredients_evites': set(prefs.ingredients_evites.values_list('nom', flat=True)),
+        }
+    except PreferenceUtilisateur.DoesNotExist:
+        return {
+            'categories_preferees': set(),
+            'regions_preferees': set(),
+            'ingredients_evites': set(),
+        }
 
-# Méthode __init__() :
-# - Initialiser nlp_engine
-# - Initialiser ml_engine
+def get_user_interactions(user):
+    favoris = set(Favori.objects.filter(utilisateur=user).values_list('recette__name', flat=True))
+    notes_positives = set(Evaluation.objects.filter(utilisateur=user, note__gte=4).values_list('recette__name', flat=True))
+    consultations = set(HistoriqueConsultation.objects.filter(utilisateur=user).values_list('recette__name', flat=True))
 
-# Méthode get_recommendations(user, query, top_n=10) :
-# - Étape 1 : Utiliser NLP pour trouver recettes candidates
-#   candidates = nlp_engine.find_similar_recipes(query, top_k=50)
-# - Étape 2 : Utiliser ML pour personnaliser
-#   ranked = ml_engine.rank_recipes(user, candidates)
-# - Étape 3 : Combiner scores NLP + ML
-#   score_final = 0.6 * score_ml + 0.4 * score_nlp
-# - Étape 4 : Retourner top_n recettes finales
-# - Format : [{'recette_id': id, 'score': score, 'recette': obj}, ...]
+    return {
+        'favoris': favoris,
+        'notes_positives': notes_positives,
+        'consultations': consultations,
+    }
 
-# Méthode _combine_scores(nlp_scores, ml_scores) :
-# - Normaliser les scores (0-1)
-# - Appliquer pondération
-# - Retourner scores combinés
+def filter_by_content(user, nlp_results):
+    prefs = get_user_preferences(user)
+    interactions = get_user_interactions(user)
+
+    filtered = []
+
+    for recette in nlp_results:
+        name = recette.get("name", "")
+
+        recette_ingredients = [i.strip().lower() for i in recette.get("ingredients", "").split("-")]
+
+        if any(ing.lower() in prefs['ingredients_evites'] for ing in recette_ingredients):
+            continue
+        score = 1.0   # ou recette["score_nlp"] 
+        if recette.get("category") in prefs['categories_preferees']:
+            score += 0.5
+        if recette.get("region") in prefs['regions_preferees']:
+            score += 0.5
+        if name in interactions['favoris']:
+            score += 0.3
+        if name in interactions['notes_positives']:
+            score += 0.2
+        if name in interactions['consultations']:
+            score += 0.1
+        recette['score_content'] = score
+        filtered.append(recette)
+
+
+    return sorted(filtered, key=lambda r: r['score_content'], reverse=True)
