@@ -1,5 +1,4 @@
 Pour activer l'espace  de travail de  mon projet je  dois  faire comme ça :   .\venv\Scripts\activate
-
 N.b: Pour lancer le serveur de Django je dois obligatoirement faire : python manager.py runserver
 pour crée une application  propre on fait  cette commande : python manage.py startapp nom_application
 N.B: chaque projet  Django  à un  clé  secrette 

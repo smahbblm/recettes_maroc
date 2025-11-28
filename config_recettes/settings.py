@@ -30,16 +30,32 @@ ALLOWED_HOSTS = []
 
 # Application definition
 
-
+INSTALLED_APPS = [
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'rest_framework',
+    'corsheaders',
+    'recettes',
+    'preferences',
+    'account',
+    'interactions',
+]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-   
-    'corsheaders.middleware.CorsMiddleware',  # ← NOUVEAU (en premier)
     
+    # 1. 🔑 Doit venir avant CorsMiddleware pour la validation. C'est CORRECT.
+    'django.middleware.csrf.CsrfViewMiddleware', 
+    
+    # 2. CorsMiddleware doit venir APRÈS CsrfViewMiddleware pour ne pas bloquer les cookies.
+    'corsheaders.middleware.CorsMiddleware',
+
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -133,26 +149,20 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-
-# config_recettes/settings.py
-
-# Application definition
-
-INSTALLED_APPS = [
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-    'rest_framework',        # ← NOUVEAU
-    'corsheaders',          # ← NOUVEAU
-    'recettes',
-    'preferences',
-    'account',
-    'interactions',
-]
-
+# Paramètres d'autorisation CORS (pour les requêtes)
+CORS_ALLOW_ALL_ORIGINS = False 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
+    "http://127.0.0.1:5173",
 ]
+
+# CRUCIAL : Autorise le domaine React à envoyer le jeton CSRF
+CSRF_TRUSTED_ORIGINS = [
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
+]
+
+# Permet l'échange de cookies/credentials (nécessaire pour le cookie csrftoken)
+CORS_ALLOW_CREDENTIALS = True
+CSRF_COOKIE_SECURE = False
+CSRF_COOKIE_DOMAIN = 'localhost'

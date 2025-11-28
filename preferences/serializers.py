@@ -1,4 +1,5 @@
-from rest_framework import serializers
+from rest_framework import serializers, generics, status
+from rest_framework.response import Response
 from .models import PreferenceUtilisateur
 from recettes.models import Categorie, Region, Ingredient
 
@@ -43,3 +44,4 @@ class IngredientSerializer(serializers.ModelSerializer):
     class Meta:
         model = Ingredient
         fields = '__all__'
+
