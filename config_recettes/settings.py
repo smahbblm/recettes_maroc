@@ -27,8 +27,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
-
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -79,7 +77,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql', 
         'NAME': 'recettes_maroc_mysql_db', 
         'USER': 'root', 
-        'PASSWORD': '12345',
+        'PASSWORD': 'mot_de_passe_root_securise',
         'HOST': '127.0.0.1', 
         'PORT': '3308', 
     }
