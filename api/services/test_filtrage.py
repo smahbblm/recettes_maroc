@@ -21,14 +21,14 @@ def test_filtrage(user_id, query):
     user = User.objects.get(id=user_id)
     csv_path = os.path.join(os.path.dirname(__file__), "../../data/datafr_cleaned.csv")
     nlp = Nlp(csv_path)
-    nlp_results = nlp.Search_query(query, top_k=10)
+    nlp_results = nlp.Search_query(query, top_k=10) 
     resultats = filter_by_content(user, nlp_results)
 
     print(f"Résultats personnalisés pour '{query}' et user {user_id}:")
 
     for recette in resultats:
 
-      print("Nom:", recette.get("nom"))
+      print("Nom:", recette.get("name"))
       print("Score:", recette.get("score_content"))
       print("Ingrédients:", recette.get("ingredients"))
       print("Instructions:", recette.get("instructions"))

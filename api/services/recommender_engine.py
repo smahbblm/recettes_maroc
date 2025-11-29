@@ -35,13 +35,13 @@ def filter_by_content(user, nlp_results):
     filtered = []
 
     for recette in nlp_results:
-        nom = recette.get("nom", "") or recette.get("name", "")
+        nom = recette.get("name", "")
 
         recette_ingredients = [i.strip().lower() for i in recette.get("ingredients", "").split("-")]
 
         if any(ing.lower() in prefs['ingredients_evites'] for ing in recette_ingredients):
             continue
-        score = 1.0   # ou recette["score_nlp"] 
+        score = 1.0   
         if recette.get("category") in prefs['categories_preferees']:
             score += 0.5
         if recette.get("region") in prefs['regions_preferees']:
