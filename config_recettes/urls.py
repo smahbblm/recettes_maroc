@@ -12,7 +12,7 @@ def get_csrf(request):
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('preferences.urls')),
-    
+    path('api/', include('api.urls')), 
     # Référencez la fonction get_csrf qui est déjà décorée
     path('api/csrf_token/', get_csrf, name='csrf_token'), 
 ]
