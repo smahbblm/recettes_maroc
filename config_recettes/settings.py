@@ -27,8 +27,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
-
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -37,7 +35,6 @@ MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
 
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -74,17 +71,17 @@ WSGI_APPLICATION = 'config_recettes.wsgi.application'
 # settings.py
 
 # settings.py
-
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql', 
-        'NAME': 'recettes_maroc_mysql_db', 
-        'USER': 'root', 
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'recettes_maroc_mysql_db',
+        'USER': 'root',        
         'PASSWORD': 'mot_de_passe_root_securise',
-        'HOST': '127.0.0.1', 
-        'PORT': '3308', 
+        'HOST': '127.0.0.1',          
+        'PORT': '3308',
     }
 }
+
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
@@ -158,4 +155,16 @@ REST_FRAMEWORK = {
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
+    "http://127.0.0.1:5173",
 ]
+
+# CRUCIAL : Autorise le domaine React à envoyer le jeton CSRF
+CSRF_TRUSTED_ORIGINS = [
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
+]
+
+# Permet l'échange de cookies/credentials (nécessaire pour le cookie csrftoken)
+CORS_ALLOW_CREDENTIALS = True
+CSRF_COOKIE_SECURE = False
+CSRF_COOKIE_DOMAIN = 'localhost'
