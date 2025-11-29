@@ -6,3 +6,4 @@ urlpatterns = [
     path('recommandations/', recommandations, name='recommandations'),
 ]
 
+
