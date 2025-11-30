@@ -1,4 +1,4 @@
-from .nlp_engine import Nlp
+#from .nlp_engine import Nlp
 from preferences.models import PreferenceUtilisateur
 from interactions.models import Favori, Evaluation, HistoriqueConsultation
 

@@ -1,3 +1,4 @@
+print("🔵 Début du chargement de api/views.py")
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from django.views.decorators.csrf import csrf_exempt
@@ -5,6 +6,8 @@ from .services.recommender_engine import filter_by_content
 from .services.nlp_engine import Nlp
 import math
 import json
+
+print("✅ Imports terminés")
 
 _nlp_engine_cache = None
 
@@ -38,7 +41,7 @@ def recommandations(request):
         return Response({"error": "Paramètre 'query' manquant."}, status=400)
 
     nlp_engine = get_nlp_engine()
-    nlp_results = nlp_engine.Search_query(query, top_k=20)
+    nlp_results = nlp_engine.Search_query(query, top_k=5)
     
     if user and user.is_authenticated:
         try:
@@ -56,3 +59,4 @@ def recommandations(request):
         "count": len(final_results),
         "results": final_results,
     })
+print("🟢 api/views.py complètement chargé!")

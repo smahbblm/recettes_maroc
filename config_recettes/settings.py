@@ -27,12 +27,15 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+
 MIDDLEWARE = [
+    # IMPORTANT : CORS AVANT CommonMiddleware
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
 
-    # IMPORTANT : CORS AVANT CommonMiddleware
-    'corsheaders.middleware.CorsMiddleware',
+    
+    
 
     'django.middleware.common.CommonMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -153,10 +156,11 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.AllowAny',  # ✅ Changez IsAuthenticated en AllowAny
     ]
 }
-
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:5173",
+    "http://localhost:5173",  # Vite (React)
+    "http://localhost:3000",  # Create React App
     "http://127.0.0.1:5173",
+    "http://127.0.0.1:3000",
 ]
 
 # CRUCIAL : Autorise le domaine React à envoyer le jeton CSRF
