@@ -57,35 +57,27 @@ class Nlp:
                 }, f)
             print("✅ Cache créé avec succès!")
     
-def Search_query(self, query, top_k=5, threshold=1.1):
-    resultats = []
-
-    vector_query = self.model.encode([query], convert_to_numpy=True)[0]
-
-    D, I = self.index.search(
-        np.array([vector_query], dtype="float32"),
-        top_k
-    )
-
-    print("Distances FAISS:", D[0])  # ✅ debug
-
-    for distance, idx in zip(D[0], I[0]):
-
-        # ✅ ON SUPPRIME LES PLATS NON LIÉS
-        if distance > threshold:
-            continue
-
-        row = self.df.iloc[idx]
-
-        def safe_value(val):
-            return None if pd.isna(val) else val
-
-        resultats.append({
-            "name": safe_value(row["name"]),
-            "ingredients": safe_value(row["ingredients"]),
-            "instructions": safe_value(row["instructions"]),
-            "image_url": safe_value(row.get("image_url")),
-            "score": float(distance)
-        })
-
-    return resultats   # ✅ peut contenir 0, 1, 2, 3... résultats SEULEMENT
+    def Search_query(self, query, top_k=10):
+        resultats = []
+        vector_query = self.model.encode([query], convert_to_numpy=True)[0]
+        D, I = self.index.search(np.array([vector_query], dtype='float32'), top_k)
+        
+        for idx in I[0]:
+            row = self.df.iloc[idx]
+            
+            # Fonction pour nettoyer les valeurs NaN
+            def safe_value(val):
+                return None if pd.isna(val) else val
+            
+            resultats.append({
+                "name": safe_value(row["name"]),
+                "ingredients": safe_value(row["ingredients"]),
+                "instructions": safe_value(row["instructions"]),
+                "preparation_time": safe_value(row.get("preparation_time")),
+                "cooking_time": safe_value(row.get("cooking_time")),
+                "total_time": safe_value(row.get("total_time")),
+                "image_url": safe_value(row.get("image_url")),
+                "source": safe_value(row.get("source"))
+            })
+        
+        return resultats

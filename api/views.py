@@ -13,10 +13,10 @@ _nlp_engine_cache = None
 
 def get_nlp_engine():
     global _nlp_engine_cache
-    if _nlp_engine_cache is None:
-        print("🔄 Chargement du moteur NLP... (cela peut prendre quelques minutes)")
-        _nlp_engine_cache = Nlp(csv_path="data/datafr_cleaned.csv")
-        print("✅ Moteur NLP chargé avec succès!")
+    #if _nlp_engine_cache is None:
+    print("🔄 Chargement du moteur NLP... (cela peut prendre quelques minutes)")
+    _nlp_engine_cache = Nlp(csv_path="data/datafr_cleaned.csv")
+    print("✅ Moteur NLP chargé avec succès!")
     return _nlp_engine_cache
 
 def clean_nan_values(obj):
@@ -33,6 +33,8 @@ def clean_nan_values(obj):
 
 @csrf_exempt
 @api_view(['GET'])
+
+
 def recommandations(request):
     user = request.user
     query = request.GET.get('query', '').strip()
@@ -59,4 +61,22 @@ def recommandations(request):
         "count": len(final_results),
         "results": final_results,
     })
+@csrf_exempt
+@api_view(['POST'])
+def reload_dataset(request):
+    """Force le rechargement du dataset"""
+    global _nlp_engine_cache
+    
+    old_cache_exists = _nlp_engine_cache is not None
+    _nlp_engine_cache = None
+    
+    # Recharger immédiatement
+    nlp_engine = get_nlp_engine()
+    
+    return Response({
+        "message": "Dataset rechargé avec succès!",
+        "was_cached": old_cache_exists,
+        "csv_path": "data/datafr_cleaned.csv"
+    })
+
 print("🟢 api/views.py complètement chargé!")

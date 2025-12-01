@@ -72,3 +72,16 @@ print(df["image_url"].head(10))
 # 7. Sauvegarder le fichier
 df.to_csv(file_path, index=False)
 print(f"\n💾 Fichier sauvegardé : {file_path}")
+result = df[df["name"].str.contains("tajine de dinde aux fruits secs", case=False, na=False)]
+
+image_url = result["image_url"].iloc[0]
+print(image_url)
+
+
+# Vérifier l'ancienne URL
+old_url = "https://www.la-cuisine-marocaine.com/photos-recettes/non-disponible.jpg"
+print(f"❌ Anciennes URLs restantes : {(df['image_url'] == old_url).sum()}")
+
+# Vérifier la nouvelle URL
+new_url = "https://alimentsain.fr/wp-content/uploads/2025/03/10-recettes-marocaines-pour-se-regaler-de-lentree-au-dessert-pendant-le-Ramadan.jpg"
+print(f"✅ Nouvelles URLs : {(df['image_url'] == new_url).sum()}")
